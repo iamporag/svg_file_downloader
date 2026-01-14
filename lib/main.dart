@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
+import 'dart:io' show File;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:html' as html; // Web only
 
 void main() {
   runApp(const MyApp());
@@ -71,7 +73,6 @@ class _SvgEditorScreenState extends State<SvgEditorScreen> {
               },
             ),
             const SizedBox(height: 20),
-
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -94,12 +95,11 @@ class _SvgEditorScreenState extends State<SvgEditorScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
             CustomButton(
               text: "Download SVG",
               onTap: () {
                 if (svgCode != null && svgCode!.isNotEmpty) {
-                  downloadSvg(svgCode!);
+                  downloadSvg(svgCode!, "i_love_u.svg");
                 }
               },
             ),
@@ -109,18 +109,27 @@ class _SvgEditorScreenState extends State<SvgEditorScreen> {
     );
   }
 
-  Future<void> downloadSvg(String svg) async {
+  Future<void> downloadSvg(String svg, String fileName) async {
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File(
-        '${directory.path}/icon_${DateTime.now().millisecondsSinceEpoch}.svg',
-      );
-
-      await file.writeAsString(svg);
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('SVG saved at: ${file.path}')));
+      if (kIsWeb) {
+        // Web download
+        final bytes = html.Blob([svg], 'image/svg+xml');
+        final url = html.Url.createObjectUrlFromBlob(bytes);
+        final anchor = html.AnchorElement(href: url)
+          ..setAttribute("download", fileName)
+          ..click();
+        html.Url.revokeObjectUrl(url);
+      } else {
+        // Mobile download (Android/iOS)
+        final directory = await getApplicationDocumentsDirectory();
+        final file = File(
+          '${directory.path}/${DateTime.now().millisecondsSinceEpoch}_$fileName',
+        );
+        await file.writeAsString(svg);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('SVG saved at: ${file.path}')));
+      }
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -179,7 +188,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.shade200.withValues(alpha: .5),
+              color: Colors.blue.shade200.withOpacity(0.5),
               offset: const Offset(0, 4),
               blurRadius: 6,
             ),
