@@ -42147,7 +42147,7 @@ R(a){return new A.zo(new A.BP(null),!1,null)}}
 A.BP.prototype={
 ap(){return new A.We(new A.OB(B.zd,$.aJ()))}}
 A.We.prototype={
-aC(){var s,r='<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">\n  <text x="10" y="70" font-family="Arial" font-size="60" fill="#000">I</text>\n  <path d="M100 50 \n           C100 20, 140 20, 140 50\n           C140 80, 100 95, 100 70\n           C100 95, 60 80, 60 50\n           C60 20, 100 20, 100 50 Z"\n        fill="red" />\n  <text x="150" y="70" font-family="Arial" font-size="60" fill="#000">U</text>\n</svg>\n'
+aC(){var s,r='<svg width="320" height="140" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">\n  <defs>\n    <!-- Heart gradient -->\n    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">\n      <stop offset="0%" stop-color="#ff6b81"/>\n      <stop offset="100%" stop-color="#ff0000"/>\n    </linearGradient>\n\n    <!-- Glow -->\n    <filter id="glow">\n      <feGaussianBlur stdDeviation="4" result="blur"/>\n      <feMerge>\n        <feMergeNode in="blur"/>\n        <feMergeNode in="SourceGraphic"/>\n      </feMerge>\n    </filter>\n  </defs>\n\n  <!-- I -->\n  <text\n    x="30"\n    y="95"\n    font-family="cursive"\n    font-size="76"\n    font-weight="400"\n    fill="#222">\n    I\n  </text>\n\n  <!-- Heart -->\n  <path\n    d="M160 40\n       C160 15, 215 15, 215 45\n       C215 85, 160 110, 160 125\n       C160 110, 105 85, 105 45\n       C105 15, 160 15, 160 40 Z"\n    fill="url(#heartGradient)"\n    filter="url(#glow)"\n  />\n\n  <!-- U -->\n  <text\n    x="245"\n    y="95"\n    font-family="cursive"\n    font-size="76"\n    font-weight="400"\n    fill="#222">\n    U\n  </text>\n</svg>\n\n'
 this.aW()
 this.e=r
 s=this.d
